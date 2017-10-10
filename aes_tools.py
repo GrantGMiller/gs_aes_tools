@@ -1145,6 +1145,7 @@ class SubClientObject:
 
 class File(extronlib.system.File):
     def __init__(self, *args, **kwargs):
+        print('aes_tools.File.__init__(*args={}, **kwargs={})'.format(args, kwargs))
         super().__init__(*args, **kwargs)
         self._key = None
         self._cipher = None
