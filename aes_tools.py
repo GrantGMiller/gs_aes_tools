@@ -1144,6 +1144,8 @@ class SubClientObject:
 # File class ********************************************************************
 
 class File(extronlib.system.File):
+    # mode is required to be of type "bytes"
+
     def __init__(self, *args, **kwargs):
         print('aes_tools.File.__init__(*args={}, **kwargs={})'.format(args, kwargs))
         super().__init__(*args, **kwargs)
@@ -1162,6 +1164,9 @@ class File(extronlib.system.File):
             print('encryptedData=', encryptedData)
             return super().write(encryptedData)
         else:
+            if isinstance(data, str):
+                #data is required to be bytes
+                data = data.encode()
             return super().write(data)
 
     def read(self):
