@@ -923,11 +923,13 @@ AESModesOfOperation = dict(
 class AES_Cipher(AESModeOfOperationCTR):
     pass
 
+
 def GetKeyFromPhrase(phrase):
     if isinstance(phrase, str):
         phrase = phrase.encode()
     h = hashlib.sha256(phrase)
     return h.digest()
+
 
 def GetRandomKey(byteLen=32):
     return bytearray(random.getrandbits(8) for i in range(byteLen))
@@ -1165,7 +1167,7 @@ class File(extronlib.system.File):
             return super().write(encryptedData)
         else:
             if isinstance(data, str):
-                #data is required to be bytes
+                # data is required to be bytes
                 data = data.encode()
             return super().write(data)
 
@@ -1176,3 +1178,11 @@ class File(extronlib.system.File):
         else:
             return super().read()
 
+
+def Encrypt(plainText, key):
+    cipher = AES_Cipher(key)
+    return cipher.encrypt(plainText)
+
+
+def Decrypt(encryptedText, key):
+    return Encrypt(encryptedText, key)  # AES is mirrored
