@@ -18,12 +18,6 @@ __all__ = ["AES", "AESModeOfOperationCTR", "AESModeOfOperationCBC", "AESModeOfOp
            "AESModeOfOperationECB", "AESModeOfOperationOFB", "AESModesOfOperation", "Counter"]
 
 
-# debug = True
-# if not debug:
-# print = lambda *args, **kwargs: None
-# else:
-# print = lambda *args, **kwargs: ProgramLog(' '.join(list(str(s) for s in args)), 'info')
-
 def _compact_word(word):
     return (word[0] << 24) | (word[1] << 16) | (word[2] << 8) | word[3]
 
