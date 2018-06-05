@@ -1179,4 +1179,5 @@ def Encrypt(plainText, key):
 
 
 def Decrypt(encryptedText, key):
+    # encryptedText should be type bytes
     return Encrypt(encryptedText, key)  # AES is mirrored
