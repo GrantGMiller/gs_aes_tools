@@ -1,4 +1,4 @@
-debug = False
+debug = True
 if not debug:
     print = lambda *a, **k: None
 
@@ -7,7 +7,7 @@ if not debug:
 
 import extronlib.interface
 from extronlib import event
-from extronlib.system import ProgramLog, Ping, Wait, File, RFile
+from extronlib.system import ProgramLog, Ping, Wait
 
 import copy
 import struct
@@ -929,6 +929,26 @@ def GetRandomKey(byteLen=32):
     return bytearray(random.getrandbits(8) for i in range(byteLen))
 
 
+def GetKey():
+    '''
+    return a key stored in RFile.
+    If no file exists, make a RFile and return the key
+    :return:
+    '''
+    fileClass = extronlib.system.RFile if debug is False else extronlib.system.File
+
+    filename = 'key.dat'
+    if not fileClass.Exists(filename):
+        with fileClass(filename, mode='wb') as file:
+            key = GetRandomKey()
+            file.write(key)
+        return key
+    else:
+        with fileClass(filename, mode='rb') as file:
+            key = file.read()
+            return key
+
+
 class EthernetClientInterface:
     def __init__(self, *args, **kwargs):
         self._interface = extronlib.interface.EthernetClientInterface(*args, **kwargs)
@@ -1142,11 +1162,17 @@ class SubClientObject:
 class File(extronlib.system.File):
     # mode is required to be of type "bytes"
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, key=None, **kwargs):
         print('aes_tools.File.__init__(*args={}, **kwargs={})'.format(args, kwargs))
         super().__init__(*args, **kwargs)
-        self._key = None
-        self._cipher = None
+        if key is None:
+            key = GetKey()
+            cipher = AES_Cipher(key)
+        else:
+            cipher =None
+
+        self._key = key
+        self._cipher = cipher
 
     def SetEncryptionKey(self, key):
         print('aes_tools.File.SetEncryptionKey(key={})'.format(key))
