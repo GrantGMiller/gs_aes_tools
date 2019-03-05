@@ -1,4 +1,4 @@
-debug = True
+debug = False
 if not debug:
     print = lambda *a, **k: None
 
