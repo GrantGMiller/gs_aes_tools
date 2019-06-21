@@ -1,4 +1,4 @@
-debug = False
+debug = True
 if not debug:
     print = lambda *a, **k: None
 
@@ -1169,8 +1169,8 @@ class File(extronlib.system.File):
             key = GetKey()
             cipher = AES_Cipher(key)
         else:
-            cipher =None
-
+            cipher = None
+        print('1173 key=', key)
         self._key = key
         self._cipher = cipher
 
@@ -1197,6 +1197,14 @@ class File(extronlib.system.File):
             return self._cipher.decrypt(super().read())
         else:
             return super().read()
+
+    def __enter__(self, *a, **k):
+        print('aes_tools.File.__enter__', a, k)
+        return self
+
+    def __exit__(self, *a, **k):
+        print('aes_tools.File.__exit__', a, k)
+        return super().__exit__(*a, **k)
 
 
 def Encrypt(plainText, key):
