@@ -1,5 +1,5 @@
-debug = True
-if not debug:
+DEBUG = False
+if not DEBUG:
     print = lambda *a, **k: None
 
 # Modified from github lib https://github.com/ricmoo/pyaes
@@ -935,7 +935,7 @@ def GetKey():
     If no file exists, make a RFile and return the key
     :return:
     '''
-    fileClass = extronlib.system.RFile if debug is False else extronlib.system.File
+    fileClass = extronlib.system.RFile if DEBUG is False else extronlib.system.File
 
     filename = 'key.dat'
     if not fileClass.Exists(filename):
@@ -1192,6 +1192,7 @@ class File(extronlib.system.File):
             return super().write(data)
 
     def read(self):
+        print('aes_tools.File.read()')
         if self._key is not None:
             self._cipher = AES_Cipher(self._key)
             return self._cipher.decrypt(super().read())
