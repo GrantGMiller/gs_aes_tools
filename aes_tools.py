@@ -6,8 +6,6 @@ if not DEBUG:
 # The MIT License (MIT)
 
 import extronlib.interface
-from extronlib import event
-from extronlib.system import ProgramLog, Ping, Wait
 
 import copy
 import struct
